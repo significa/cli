@@ -1,23 +1,22 @@
 #!/usr/bin/env node
-
-const program = require("commander");
 const create = require("./scripts/create");
 const log = require("./scripts/log");
-const { version } = require("./package.json");
 
-let appName;
-
-program
-  .version(version)
-  .arguments("<appName>")
-  .option("-v, --version", "version")
-  .action(_appName => {
-    appName = _appName;
-  })
-  .parse(process.argv);
-
-if (appName) {
-  create(appName);
-} else {
-  log("Please, choose a name for your project.");
-}
+var inquirer = require("inquirer");
+log("Welcome");
+inquirer
+  .prompt([
+    { type: "input", message: "Name:", name: "appName" },
+    { type: "input", message: "Description:", name: "appDescription" },
+    { type: "input", message: "Author:", name: "appAuthor" },
+    { type: "input", message: "URL:", name: "appUrl" },
+    {
+      type: "list",
+      message: "Kind of project:",
+      name: "kind",
+      choices: ["typescript", "vanilla-react"]
+    }
+  ])
+  .then(args => {
+    create(args);
+  });

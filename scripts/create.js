@@ -23,24 +23,26 @@ const isFolderExistsSync = dir => {
   }
 };
 
-async function create(app) {
-  const fullPathFolder = path(runPath, app);
+async function create(args) {
+  const { appName, appDescription, appAuthor, appUrl } = args;
+  const pathAppName = _.kebabCase(appName);
+  const fullPathFolder = path(runPath, appName);
 
   if (isFolderExistsSync(fullPathFolder)) {
-    log(`Folder "${app}" already exists`, "error");
+    log(`Folder "${appName}" already exists`, "error");
   } else {
     log(
-      `1/3: 🚀  Start cloning "@significa/gatsby-typescript-boilerplate" at "${app}"`,
+      `1/3: 🚀  Start cloning "@significa/gatsby-typescript-boilerplate" at "${pathAppName}"`,
       "progress"
     );
     await Git.Clone(
       "https://github.com/significa/gatsby-typescript-boilerplate",
-      `./${app}`,
+      `./${pathAppName}`,
       { checkoutBranch: "proposal" }
     );
-    log(`1/3: 🚀  The project "${app}" has been cloned`, "success");
+    log(`1/3: 🚀  The project "${pathAppName}" has been cloned`, "success");
 
-    log(`2/3: 🔍  Renaming the project to "${app}"`, "progress");
+    log(`2/3: 🔍  Renaming the project to "${pathAppName}"`, "progress");
     await recursive(fullPathFolder, [".DS_Store", ".git"], (err, files) => {
       if (!err) {
         files.forEach(file => {
@@ -49,7 +51,10 @@ async function create(app) {
             const compiled = _.template(fileContent);
 
             const metadata = {
-              appName: _.kebabCase(app)
+              appName: appName,
+              appDescription: appDescription,
+              appAuthor: appAuthor,
+              appUrl: appUrl
             };
 
             try {
@@ -67,7 +72,7 @@ async function create(app) {
 
     log(`3/3: 🔗  Installing dependencies.`, "progress");
 
-    const process = exec(`cd ${app} && npm install`);
+    const process = exec(`cd ${pathAppName} && npm install`);
     process.stdout.on("data", data => {
       console.log(data);
     });
@@ -75,7 +80,7 @@ async function create(app) {
     process.on("exit", code => {
       log(`3/3: 🔗  Dependencies has been installed.`, "success");
 
-      log(`🎉  To get started, run: "npm run start"`);
+      log(`🎉  To get started, run: "cd ${pathAppName} && npm run dev"`);
     });
   }
 }
