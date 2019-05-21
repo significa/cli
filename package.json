@@ -1,0 +1,22 @@
+{
+  "name": "significa-starter",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./index.js",
+  "bin": {
+    "significa": "./index.js",
+    "sgn": "./index.js"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "child-process-promise": "^2.2.1",
+    "commander": "^2.19.0",
+    "git-clone-repo": "^1.0.0",
+    "lodash": "^4.17.11",
+    "nodegit": "^0.24.3",
+    "recursive-readdir": "^2.2.2",
+    "shelljs": "^0.8.3",
+    "wrench": "^1.5.9"
+  }
+}
