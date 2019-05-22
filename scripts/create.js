@@ -1,12 +1,16 @@
 const _ = require("lodash");
-
 const fs = require("fs");
 const path = require("path").join;
-const runPath = process.cwd();
-const log = require("./log");
 const Git = require("nodegit");
 const recursive = require("recursive-readdir");
-const { exec } = require("child_process");
+
+const log = require("./log");
+const manager = require("./manager");
+
+const runPath = process.cwd();
+const managerType = manager();
+const cmdRun = managerType === "yarn" ? "yarn" : "npm run";
+const cmdInstall = managerType === "yarn" ? "yarn" : "npm install";
 
 _.templateSettings = {
   evaluate: /{{([\s\S]+?)}}/g,
@@ -32,17 +36,17 @@ async function create(args) {
     log(`Folder "${appName}" already exists`, "error");
   } else {
     log(
-      `1/3: 🚀  Start cloning "@significa/gatsby-typescript-boilerplate" at "${pathAppName}"`,
+      `2/3: 🚀  Start cloning "@significa/gatsby-starter" at "${pathAppName}"`,
       "progress"
     );
     await Git.Clone(
-      "https://github.com/significa/gatsby-typescript-boilerplate",
+      "https://github.com/significa/gatsby-starter",
       `./${pathAppName}`,
       { checkoutBranch: "proposal" }
     );
-    log(`1/3: 🚀  The project "${pathAppName}" has been cloned`, "success");
+    log(`2/3: 🚀  The project "${pathAppName}" has been cloned`, "success");
 
-    log(`2/3: 🔍  Renaming the project to "${pathAppName}"`, "progress");
+    log(`3/3: 🔍  Renaming the project to "${pathAppName}"`, "progress");
     await recursive(fullPathFolder, [".DS_Store", ".git"], (err, files) => {
       if (!err) {
         files.forEach(file => {
@@ -68,20 +72,15 @@ async function create(args) {
         });
       }
     });
-    log(`2/3: 🔍  The project has been renamed.`, "success");
+    log(`3/3: 🔍  The project has been renamed.`, "success");
 
-    log(`3/3: 🔗  Installing dependencies.`, "progress");
+    log(`
 
-    const process = exec(`cd ${pathAppName} && npm install`);
-    process.stdout.on("data", data => {
-      console.log(data);
-    });
-
-    process.on("exit", code => {
-      log(`3/3: 🔗  Dependencies has been installed.`, "success");
-
-      log(`🎉  To get started, run: "cd ${pathAppName} && npm run dev"`);
-    });
+🎉  To get started, run: 
+    1. cd ${pathAppName} 
+    2. ${cmdInstall}
+    3. ${cmdInstall} dev
+`);
   }
 }
 

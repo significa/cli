@@ -1,8 +1,8 @@
 const chalk = require("chalk");
 
 const log = (msg, type) => {
-  const prefix = chalk.hex("#0154FF").bold("@significa ");
-  let typeMessage = chalk.hex("#0154FF").bold(`➜ ${msg}`);
+  const prefix = chalk.blue.bold("@significa/cli ");
+  let typeMessage = chalk.blue.bold(`➜ ${msg}`);
 
   if (type === "success") {
     typeMessage = chalk.green.bold(`✔︎ ${msg}`);
