@@ -19,9 +19,9 @@ The `@significa/cli` command line tool (CLI) is the main entry point for create 
 
 #### Using
 
-`$ significa` or `$ sgn`
+`$ significa`
 
-**Comands:**
+**Commands:**
 
 - `gatsby`: clone [gatsby-starter](https://github.com/Significa/gatsby-starter) and customize with the following variables;
 

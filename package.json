@@ -1,13 +1,13 @@
 {
   "name": "@significa/cli",
-  "version": "0.0.1",
+  "private": false,
+  "version": "0.1.0",
   "description": "Significa's CLI",
   "author": "Significa <hello@significa.co>",
   "siteUrl": "https://significa.co",
   "main": "./index.js",
   "bin": {
-    "significa": "./index.js",
-    "sgn": "./index.js"
+    "significa": "./index.js"
   },
   "devDependencies": {},
   "dependencies": {
